@@ -65,7 +65,7 @@ def main():
 
 	# Building out the predication page
 	if selection == "Prediction":
-		st.title("Tweet Classifer")
+		st.title("Tweet Classifier")
 		st.subheader("Climate change tweet classification")
 		st.info("Prediction with ZF3 Machine learning Model")
 		# Creating a text box for user input
@@ -76,7 +76,7 @@ def main():
 			vect_text = tweet_cv.transform([tweet_text]).toarray()
 			# Load your .pkl file with the model of your choice + make predictions
 			# Try loading in multiple models to give the user a choice
-			predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
+			predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
 			prediction = predictor.predict(vect_text)
 
 	# Building our company's profile page
