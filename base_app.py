@@ -41,31 +41,37 @@ def main():
 
 	# Creates a main title and subheader on your page -
 	# these are static across all pages
-	st.title("Tweet Classifer")
-	st.subheader("Climate change tweet classification")
+	#st.title("Tweet Classifer")
+	#st.subheader("Climate change tweet classification")
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
-	options = ["Prediction", "Information"]
+	options = ["Prediction", "Information", "About the company"]
 	selection = st.sidebar.selectbox("Choose Option", options)
 
 	# Building out the "Information" page
 	if selection == "Information":
-		st.info("General Information")
+		st.title("Project Information")
+		st.subheader("Climate change insight")
+		st.info(" To Provide an accurate and robust solution to companies to access a broad base of consumer sentiment, spanning multiple demographic and geographic categories hence increasing their insights and informing future marketing strategies.")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("Some information here")
+		st.markdown("A model that is able to classify whether or not a person believes in climate change, based on their novel tweet data")
 
 		st.subheader("Raw Twitter data and label")
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
 			st.write(raw[['sentiment', 'message']]) # will write the df to the page
+            
+            
 
 	# Building out the predication page
 	if selection == "Prediction":
-		st.info("Prediction with ML Models")
+		st.title("Tweet Classifer")
+		st.subheader("Climate change tweet classification")
+		st.info("Prediction with ZF3 Machine learning Model")
 		# Creating a text box for user input
-		tweet_text = st.text_area("Enter Text","Type Here")
+		tweet_text = st.text_area("Enter your Text","Type Here")
 
-		if st.button("Classify"):
+		if st.button("Click to Classify"):
 			# Transforming user input with vectorizer
 			vect_text = tweet_cv.transform([tweet_text]).toarray()
 			# Load your .pkl file with the model of your choice + make predictions
@@ -73,10 +79,27 @@ def main():
 			predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
 			prediction = predictor.predict(vect_text)
 
+	# Building our company's profile page
+	if selection == "About the company":
+		st.title("Company's profile") 
+		st.subheader("Welcome to ZF3 company")
+		st.info("The company was founded in June 2022 with the following pioneers")
+		# You can read a markdown file from supporting resources folder
+		st.markdown("Francis Ikegwu,
+                    Abigael Kinini,
+                    Michael Mamah,
+                    Raheeemat Adetunji,
+                    Victor Meleka,
+                    Harmony Odumuko")
+
+		st.subheader("More information")
+		if st.checkbox('Show contact information'): # data is hidden if box is unchecked
+			st.info("francisikegwu@yahoo.com, kininiabigael@gmail.com,mamahchidike@gmail.com, icontola@gmail.com, vicmeleka@gmail.com, nibotics@gmail.com") # will write the df to the page            
+
 			# When model has successfully run, will print prediction
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
-			st.success("Text Categorized as: {}".format(prediction))
+			#st.success("Text Categorized as: {}".format(prediction))
 
 # Required to let Streamlit instantiate our web app.  
 if __name__ == '__main__':
