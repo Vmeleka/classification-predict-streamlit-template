@@ -85,12 +85,7 @@ def main():
 		st.subheader("Welcome to ZF3 company")
 		st.info("The company was founded in June 2022 with the following pioneers")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("Francis Ikegwu,
-                    Abigael Kinini,
-                    Michael Mamah,
-                    Raheeemat Adetunji,
-                    Victor Meleka,
-                    Harmony Odumuko")
+		st.markdown("Francis Ikegwu,Abigael Kinini, Michael Mamah, Raheeemat Adetunji,Victor Meleka, Harmony Odumuko") 
 
 		st.subheader("More information")
 		if st.checkbox('Show contact information'): # data is hidden if box is unchecked
