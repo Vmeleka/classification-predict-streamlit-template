@@ -48,13 +48,14 @@ def main():
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
+	st.sidebar.image('climate.jpg', width =100)
+	st.sidebar.title("ZF3 DATA BOT®")
 
-	st.sidebar.title("ZF3 DATA BOT")
-	st.sidebar.subheader("Defining growth through data")
 	st.sidebar.title("Menu")
 	options = ["Prediction", "EDA", "Information", "About the company"]
 	selection = st.sidebar.selectbox("Choose Option", options)
-
+    
+	st.sidebar.subheader("Defining growth through data")
     
 	if selection == "EDA":
 		st.title("Graphical representation of the models")
@@ -94,8 +95,8 @@ def main():
 
 	# Building out the predication page
 	if selection == "Prediction":
-		st.title("Tweet Classifier")     
-		st.subheader("Climate change tweet classification")
+		st.title("afval plastic")     
+		st.subheader("Climate change tweet classifier")
 #		st.info("Please Enter your text below and click  'classify'  to output results")
 		# Creating a text box for user input
 		tweet_text = st.text_area("Enter your Text below to classify","Type Here")        
@@ -111,11 +112,11 @@ def main():
 		# Try loading in multiple models to give the user a choice
             
 			if selection == "Logistic Regression Model":  
-				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
+				predictor = joblib.load(open(os.path.join("vector.pkl"),"rb"))
 				prediction = predictor.predict(vect_text)
                     
 			if selection == "RamdonForest Model":
-				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
+				predictor = joblib.load(open(os.path.join("michael_vector.pkl"),"rb"))
 				prediction = predictor.predict(vect_text)
                     
 			if selection == "MultinomiaNB Naive Model":  
@@ -221,7 +222,7 @@ def main():
 #         be random.
 #     """)
 #		st.image("https://static.streamlit.io/examples/dice.jpg")        
-			video_file = open('sdw.mp4', 'rb')
+			video_file = open('ZF3_Video.mp4', 'rb')
 			video_bytes = video_file.read()
 			st.video(video_bytes)            
             
