@@ -23,7 +23,9 @@
 """
 # Streamlit dependencies
 import streamlit as st
-#import joblib,os
+import joblib,os
+import numpy as np                     
+import pandas as pd
 
 # Data dependencies
 import pandas as pd
@@ -46,12 +48,31 @@ def main():
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
-	options = ["Prediction", "Information", "About the company"]
+
+	st.sidebar.title("ZF3 DATA BOT")
+	st.sidebar.subheader("Defining growth through data")
+	st.sidebar.title("Menu")
+	options = ["Prediction", "EDA", "Information", "About the company"]
 	selection = st.sidebar.selectbox("Choose Option", options)
 
     
+	if selection == "EDA":
+		st.title("Graphical representation of the models")
+		with st.container():
+			st.write("model performance")
+
+        # You can call any Streamlit command, including custom components:
+			st.bar_chart(np.random.randn(50, 3))
+
+		st.write("model not to scale")
+		st.title("Non-Graphical summary")    
     
-    
+		container = st.container()
+		container.write("This is inside the container")
+		st.write("This is outside the container")
+
+		# Now insert some more in the container
+		container.write("This is inside too")
     
     
 	# Building out the "Information" page
@@ -75,12 +96,12 @@ def main():
 	if selection == "Prediction":
 		st.title("Tweet Classifier")     
 		st.subheader("Climate change tweet classification")
-		st.info("Prediction with ZF3 Machine learning Model")
+#		st.info("Please Enter your text below and click  'classify'  to output results")
 		# Creating a text box for user input
-		tweet_text = st.text_area("Enter your Text","Type Here")        
+		tweet_text = st.text_area("Enter your Text below to classify","Type Here")        
         
         # you can create multiple pages this way
-		options = ["lm", "naive", "mcv"]
+		options = ["Logistic Regression Model", "RamdonForest Model", "MultinomiaNB Naive Model" ,"SVC Model"]
 		selection = st.sidebar.selectbox("Select Model", options)
 
 		if st.button("Click to Classify"):
@@ -89,15 +110,19 @@ def main():
 		# Load your .pkl file with the model of your choice + make predictions
 		# Try loading in multiple models to give the user a choice
             
-			if selection == "lm":  
+			if selection == "Logistic Regression Model":  
 				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
 				prediction = predictor.predict(vect_text)
                     
-			if selection == "naive":
+			if selection == "RamdonForest Model":
 				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
 				prediction = predictor.predict(vect_text)
                     
-			if selection == "mcv":  
+			if selection == "MultinomiaNB Naive Model":  
+				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
+				prediction = predictor.predict(vect_text)
+                
+			if selection == "SVC Model":  
 				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
 				prediction = predictor.predict(vect_text)                   
                    
@@ -112,44 +137,93 @@ def main():
 	# Building our company's profile page
 	if selection == "About the company":
 		st.title("Company's profile") 
-		st.subheader("Welcome to ZF3 company")
-		st.info("The company was founded in June 2022 with the following pioneers")
+#		st.subheader("Welcome to ZF3 company")
+		st.info("Welcome to ZF3 company. The company was founded in June 2022 by the following pioneers")
 		# You can read a markdown file from supporting resources folder
-        
-        
 
         
+#Display Images side by side        
+		from PIL import Image        
+		col1, col2 = st.columns(2)
+
+		with col1:
+			st.header("Harmony Odumuko")
+			st.subheader("President")             
+			st.image('Harmony Odumuko.jpg', caption='President',width =265)
+
+		with col2:
+			st.header("Michael Mamah")
+			st.subheader("Vice-President")             
+			st.image('Michael Mamah.jpg', caption='Vice-President')
+            
+		col3, col4 = st.columns(2)            
+		with col3:
+			st.header("Raheemat Adetunji")
+			st.subheader("Cloud expert")            
+			st.image('Raheemat Adetunji.jpg', caption='Cloud expert', width=250) 
+                        
+		with col4:
+			st.header("Abigael Kinini")
+			st.subheader("Strategies ")             
+			st.image('Abigael Kinini.jpg', caption='Strategies',width =375)            
+            
+            
+            
+		col5, col6 = st.columns(2)                        
+		with col5:           
+			st.header("Francis Ikegwue")
+			st.subheader("Director, Human Resources")             
+			st.image('Francis Ikegwue.jpg', caption='Human Resources', width=260)        
+        
+		with col6:
+			st.header("Victor Meleka")
+			st.subheader("Technical Operations")             
+			st.image('Victor Meleka.jpg', caption='Technical Operations') 
+
+
         #image doc code format
 
-		from PIL import Image
-		image1 = Image.open('abcf.jpg')        
-		victor_image = Image.open('victor.jpg')
-		Francis_image = Image.open('abcf.jpg')        
-		Abigael_image = Image.open('abcf.jpg')
-		Michael_image = Image.open('abcf.jpg')
-		Raheeemat_image = Image.open('abcf.jpg')
-		Harmony_image = Image.open('abcf.jpg') 
+#		from PIL import Image
+#		image1 = Image.open('abcf.jpg')        
+#		victor_image = Image.open('victor.jpg')
+#		Francis_image = Image.open('abcf.jpg')        
+#		Abigael_image = Image.open('abcf.jpg')
+#		Michael_image = Image.open('abcf.jpg')
+#		Raheeemat_image = Image.open('abcf.jpg')
+#		Harmony_image = Image.open('abcf.jpg') 
         
-		st.image(image1, caption='Sunrise by the mountains', width=350)
-		st.image(victor_image, caption='Model Expert', width=350) 
+#		st.image(image1, caption='Sunrise by the mountains', width=350)
+#		st.image(victor_image, caption='Model Expert', width=350) 
         
         #documentation for images
         #st.image(image, caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
-        
-        
 
-
-
-		st.markdown("Francis Ikegwu,Abigael Kinini, Michael Mamah, Raheeemat Adetunji,Victor Meleka, Harmony Odumuko") 
-
+      
 		st.subheader("More information")
 		if st.checkbox('Show contact information'): # data is hidden if box is unchecked
-			st.info("francisikegwu@yahoo.com, kininiabigael@gmail.com,mamahchidike@gmail.com, icontola@gmail.com, vicmeleka@gmail.com, nibotics@gmail.com") # will write the df to the page  
-        # video format /doc
-		video_file = open('sdw.mp4', 'rb')
-		video_bytes = video_file.read()
+			st.info("francisikegwu@yahoo.com, kininiabigael@gmail.com, mamahchidike@gmail.com,icontola@gmail.com, vicmeleka@gmail.com, nibotics@gmail.com")
+            # will write the df to the page  
 
-		st.video(video_bytes)            
+
+#		st.markdown("Francis Ikegwu,Abigael Kinini, Michael Mamah, Raheeemat Adetunji,Victor Meleka, Harmony Odumuko") 
+
+#		st.subheader("More information")
+#		if st.checkbox('Show contact information'): # data is hidden if box is unchecked
+#			st.info("francisikegwu@yahoo.com, kininiabigael@gmail.com,mamahchidike@gmail.com, icontola@gmail.com, vicmeleka@gmail.com, nibotics@gmail.com") # will write the df to the page  
+        # video format /doc
+        
+#st.bar_chart({"data": [1, 5, 2, 6, 2, 1]})
+
+		with st.expander("Expand to see Company's video profile"):
+#		st.write("""
+#         The chart above shows some numbers I picked for you.
+#         I rolled actual dice for these, so they're *guaranteed* to
+#         be random.
+#     """)
+#		st.image("https://static.streamlit.io/examples/dice.jpg")        
+			video_file = open('sdw.mp4', 'rb')
+			video_bytes = video_file.read()
+			st.video(video_bytes)            
             
 
 			# When model has successfully run, will print prediction
