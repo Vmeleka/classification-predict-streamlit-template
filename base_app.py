@@ -31,11 +31,22 @@ import pandas as pd
 import pandas as pd
 
 # Vectorizer
-news_vectorizer = open("resources/tfidfvect.pkl","rb")
+news_vectorizer = open("michael_vector.pkl","rb")
 tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl file
 
 # Load your raw data
-raw = pd.read_csv("resources/train.csv")
+raw = pd.read_csv("train.csv")
+
+def app_output (pn):   
+	if (pn == -1):
+		pr=("Pro: the tweet supports the belief of man-made climate change") 
+	elif (pn == 0):
+		pr=("News: the tweet links to factual news about climate change")                  
+	elif (pn == 1):
+		pr=("Neutral: the tweet neither supports nor refutes the belief of man-made climate change")
+	else:
+		pr=("Anti: the tweet does not believe in man-made climate change") 
+	return st.text(pr) 
 
 # The main function where we will build the actual app
 def main():
@@ -48,41 +59,59 @@ def main():
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
-	st.sidebar.image('climate.jpg', width =100)
+	st.sidebar.image('logt.jpeg', width =150)
 	st.sidebar.title("ZF3 DATA BOT®")
-
+#	st.sidebar.subheader("Defining growth through data")
 	st.sidebar.title("Menu")
+    
+    
+       
+#	st.sidebar.subheader("Defining growth through data")
+#	st.sidebar.title("Menu")
+#	st.image('bar_sentiments.jpg')     
 	options = ["Prediction", "EDA", "Information", "About the company"]
 	selection = st.sidebar.selectbox("Choose Option", options)
     
-	st.sidebar.subheader("Defining growth through data")
+
     
 	if selection == "EDA":
-		st.title("Graphical representation of the models")
-		with st.container():
-			st.write("model performance")
+		st.title("Exploratory Data Analysis")
+#	with st.container():
+#	st.write("model performance")
 
         # You can call any Streamlit command, including custom components:
-			st.bar_chart(np.random.randn(50, 3))
+#			st.bar_chart(np.random.randn(50, 3))
 
-		st.write("model not to scale")
-		st.title("Non-Graphical summary")    
-    
-		container = st.container()
-		container.write("This is inside the container")
-		st.write("This is outside the container")
+#		st.write("model not to scale")
+		st.subheader("Climate Wordcloud")  
+		st.image('climate_wordcloud.jpg')
+
+		st.subheader("Bar Graph representation of the models")        
+		st.image('der.jpg')
+        
+		st.subheader("Twitter sentiments")
+		st.image('twittersentiment.jpg')        
+#		container = st.container()
+#		container.write("This is inside the container")
+#		st.write("This is outside the container")
 
 		# Now insert some more in the container
-		container.write("This is inside too")
+#		container.write("This is inside too")
     
     
 	# Building out the "Information" page
 	if selection == "Information":
-		st.title("Project Information")
-		st.subheader("Climate change insight")
+		st.title("Information Page")
+		st.subheader("Mission Statement")
 		st.info(" To Provide an accurate and robust solution to companies to access a broad base of consumer sentiment, spanning multiple demographic and geographic categories hence increasing their insights and informing future marketing strategies.")
+		st.subheader("Vision Statement")
+		st.info("A model that is able to classify whether or not a person believes in climate change, based on their novel tweet data")
+#	st.markdown("A model that is able to classify whether or not a person believes in climate change, based on their novel tweet data")        
+		st.subheader("Confusion Matrix of the Logistric Regression Model")
+		st.image('cf.jpg')
+		st.subheader("Bar Graph showing the size of the individual sentiments")
+		st.image("bars.jpg")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("A model that is able to classify whether or not a person believes in climate change, based on their novel tweet data")
 
 		st.subheader("Raw Twitter data and label")
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
@@ -95,14 +124,14 @@ def main():
 
 	# Building out the predication page
 	if selection == "Prediction":
-		st.title("afval plastic")     
+		st.title("ABC Plastic")     
 		st.subheader("Climate change tweet classifier")
 #		st.info("Please Enter your text below and click  'classify'  to output results")
 		# Creating a text box for user input
 		tweet_text = st.text_area("Enter your Text below to classify","Type Here")        
         
         # you can create multiple pages this way
-		options = ["Logistic Regression Model", "RamdonForest Model", "MultinomiaNB Naive Model" ,"SVC Model"]
+		options = ["Logistic Regression Model", "Naive bayes model", "Passive model" ,"SVC model"]
 		selection = st.sidebar.selectbox("Select Model", options)
 
 		if st.button("Click to Classify"):
@@ -110,31 +139,28 @@ def main():
 			vect_text = tweet_cv.transform([tweet_text]).toarray()
 		# Load your .pkl file with the model of your choice + make predictions
 		# Try loading in multiple models to give the user a choice
-            
+
+    
 			if selection == "Logistic Regression Model":  
-				predictor = joblib.load(open(os.path.join("vector.pkl"),"rb"))
-				prediction = predictor.predict(vect_text)
-                    
-			if selection == "RamdonForest Model":
-				predictor = joblib.load(open(os.path.join("michael_vector.pkl"),"rb"))
-				prediction = predictor.predict(vect_text)
-                    
-			if selection == "MultinomiaNB Naive Model":  
-				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
-				prediction = predictor.predict(vect_text)
-                
-			if selection == "SVC Model":  
-				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
-				prediction = predictor.predict(vect_text)                   
-                   
-                    
-#				predictor = joblib.load(open(os.path.join("forest_model.pkl"),"rb"))
-#				prediction = predictor.predict(vect_text)
-
-
-
-
-
+				predictor = joblib.load(open(os.path.join("michael_log_reg_model.pkl"),"rb"))
+				a = predictor.predict(vect_text)           
+				app_output(a)                       
+                                        
+			if selection == "Naive bayes model":
+				predictor = joblib.load(open(os.path.join("michael_naive_bayes_model.pkl"),"rb"))
+				b = predictor.predict(vect_text)
+				app_output(b) 
+               
+			if selection == "Passive model":  
+				predictor = joblib.load(open(os.path.join("michael_passive_model.pkl"),"rb"))
+				c = predictor.predict(vect_text)
+				app_output(c) 
+                                         
+			if selection == "SVC model":  
+				predictor = joblib.load(open(os.path.join("michael_SVC_model.pkl"),"rb"))
+				d = predictor.predict(vect_text)                   
+				app_output(d) 
+               
 	# Building our company's profile page
 	if selection == "About the company":
 		st.title("Company's profile") 
@@ -150,36 +176,37 @@ def main():
 		with col1:
 			st.header("Harmony Odumuko")
 			st.subheader("President")             
-			st.image('Harmony Odumuko.jpg', caption='President',width =265)
+			st.image('Harmony Odumuko.jpg', width =243)
 
 		with col2:
 			st.header("Michael Mamah")
 			st.subheader("Vice-President")             
-			st.image('Michael Mamah.jpg', caption='Vice-President')
-            
-		col3, col4 = st.columns(2)            
+			st.image('Michael Mamah.jpg')
+                                   
+		col3, col4 = st.columns(2)
+        
 		with col3:
 			st.header("Raheemat Adetunji")
 			st.subheader("Cloud expert")            
-			st.image('Raheemat Adetunji.jpg', caption='Cloud expert', width=250) 
-                        
+			st.image('Raheemat Adetunji.jpg', width=190)
+            
 		with col4:
 			st.header("Abigael Kinini")
-			st.subheader("Strategies ")             
-			st.image('Abigael Kinini.jpg', caption='Strategies',width =375)            
-            
-            
-            
-		col5, col6 = st.columns(2)                        
-		with col5:           
-			st.header("Francis Ikegwue")
-			st.subheader("Director, Human Resources")             
-			st.image('Francis Ikegwue.jpg', caption='Human Resources', width=260)        
+			st.subheader("Director Strategies ")             
+			st.image('Abigael Kinini.jpg', width =212)               
         
-		with col6:
+		col5, col6 = st.columns(2)     
+        
+		with col5:
 			st.header("Victor Meleka")
 			st.subheader("Technical Operations")             
-			st.image('Victor Meleka.jpg', caption='Technical Operations') 
+			st.image('Victor Meleka.jpg', width =265)   
+                      
+		with col6:           
+			st.header("Francis Ikegwu")
+			st.subheader("Business Intelligence")             
+			st.image('Francis Ikegwue.jpg', width=250)        
+        
 
 
         #image doc code format
@@ -222,10 +249,10 @@ def main():
 #         be random.
 #     """)
 #		st.image("https://static.streamlit.io/examples/dice.jpg")        
-			video_file = open('ZF3_Video.mp4', 'rb')
+			video_file = open('Kinini.mp4', 'rb')
 			video_bytes = video_file.read()
 			st.video(video_bytes)            
-            
+	st.sidebar.subheader("Defining growth through data")            
 
 			# When model has successfully run, will print prediction
 			# You can use a dictionary or similar structure to make this output
